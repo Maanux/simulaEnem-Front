@@ -49,12 +49,63 @@ export class RegisterComponent {
     }
   }
 
+  getNomeError(nomeControl: any): string {
+    if (nomeControl?.hasError('required')) {
+      return 'Nome é obrigatório';
+    }
+    return '';
+  }
+
+  getSobrenomeError(sobrenomeControl: any): string {
+    if (sobrenomeControl?.hasError('required')) {
+      return 'Sobrenome é obrigatório';
+    }
+    return '';
+  }
+
+  getApelidoError(apelidoControl: any): string {
+    if (apelidoControl?.hasError('required')) {
+      return 'Apelido é obrigatório';
+    }
+    return '';
+  }
+
   getEmailError(emailControl: any): string {
     if (emailControl?.hasError('required')) {
       return 'Email é obrigatório';
     }
     if (emailControl?.hasError('email')) {
       return 'Por favor insira um email válido';
+    }
+    return '';
+  }
+
+  getTelefoneError(telefoneControl: any): string {
+    if (telefoneControl?.hasError('required')) {
+      return 'Telefone é obrigatório';
+    }
+    if (telefoneControl?.hasError('pattern')) {
+      return 'Telefone inválido';
+    }
+    return '';
+  }
+
+  getSenhaError(senhaControl: any): string {
+    if (senhaControl?.hasError('required')) {
+      return 'Senha é obrigatória';
+    }
+    if (senhaControl?.hasError('minlength')) {
+      return 'Senha deve ter no mínimo 6 caracteres';
+    }
+    return '';
+  }
+
+  getConfirmacaoSenhaError(confirmacaoControl: any, senhaControl: any): string {
+    if (confirmacaoControl?.hasError('required')) {
+      return 'Confirmação de senha é obrigatória';
+    }
+    if (senhaControl?.value !== confirmacaoControl?.value) {
+      return 'As senhas não coincidem';
     }
     return '';
   }

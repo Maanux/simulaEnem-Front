@@ -11,26 +11,42 @@
         optionLabel="label" optionValue="value" aria-labelledby="basic" />
 
     <div class="nomeSobrenome">
-        <p-floatlabel variant="on">
-            <input pInputText id="nome" [(ngModel)]="value1" name="nome" autocomplete="off" />
-            <label for="nome">Nome</label>
-        </p-floatlabel>
-        <p-floatlabel variant="on">
-            <input pInputText id="sobrenome" [(ngModel)]="value2" name="sobrenome" autocomplete="off" />
-            <label for="sobrenome">Sobrenome</label>
-        </p-floatlabel>
-    </div>
-    <div class="inputs">
-        <p-floatlabel variant="on">
-            <input pInputText id="apelido" [(ngModel)]="value3" name="apelido" autocomplete="off" />
-            <label for="apelido">Apelido</label>
-        </p-floatlabel>
+        <div><p-floatlabel variant="on">
+                <input pInputText id="nome" [(ngModel)]="value1" name="nome" #nome="ngModel" required
+                    autocomplete="off" />
+                <label for="nome">Nome</label>
+            </p-floatlabel>
+            @if (nome.invalid && (nome.touched || formSubmitted)) {
+            <p-message severity="error" [text]="getNomeError(nome)" styleClass="error-message"></p-message>
+            }
+        </div>
+
+        <div><p-floatlabel variant="on">
+                <input pInputText id="sobrenome" [(ngModel)]="value2" name="sobrenome" #sobrenome="ngModel" required
+                    autocomplete="off" />
+                <label for="sobrenome">Sobrenome</label>
+            </p-floatlabel>
+            @if (sobrenome.invalid && (sobrenome.touched || formSubmitted)) {
+            <p-message severity="error" [text]="getSobrenomeError(sobrenome)" styleClass="error-message"></p-message>
+            }
+        </div>
     </div>
 
     <div class="inputs">
         <p-floatlabel variant="on">
-            <input pInputText type="email" id="email" [(ngModel)]="value4" name="email" autocomplete="off"
-                #email="ngModel" required email [invalid]="email.invalid && (email.touched || formSubmitted)" />
+            <input pInputText id="apelido" [(ngModel)]="value3" name="apelido" #apelido="ngModel" required
+                autocomplete="off" />
+            <label for="apelido">Apelido</label>
+        </p-floatlabel>
+        @if (apelido.invalid && (apelido.touched || formSubmitted)) {
+        <p-message severity="error" [text]="getApelidoError(apelido)" styleClass="error-message"></p-message>
+        }
+    </div>
+
+    <div class="inputs">
+        <p-floatlabel variant="on">
+            <input pInputText type="email" id="email" [(ngModel)]="value4" name="email" #email="ngModel" required email
+                autocomplete="off" />
             <label for="email">Email</label>
         </p-floatlabel>
         @if (email.invalid && (email.touched || formSubmitted)) {
@@ -40,19 +56,37 @@
 
     <div class="inputs">
         <p-floatlabel variant="on">
-            <p-inputmask id="on_label" [(ngModel)]="value5" mask="(99)99999-9999" name="telefone" />
-            <label for="on_label">Telefone</label>
+            <p-inputmask id="telefone" [(ngModel)]="value5" name="telefone" #telefone="ngModel" required
+                mask="(99)99999-9999" />
+            <label for="telefone">Telefone</label>
         </p-floatlabel>
+        @if (telefone.invalid && (telefone.touched || formSubmitted)) {
+        <p-message severity="error" [text]="getTelefoneError(telefone)" styleClass="error-message"></p-message>
+        }
     </div>
 
-    <div class="inputs"><p-floatlabel variant="on">
-            <p-password [(ngModel)]="value6" inputId="on_label" [toggleMask]="true" />
-            <label for="on_label">Senha</label>
-        </p-floatlabel></div>
-    <div class="inputs"><p-floatlabel variant="on">
-            <p-password [(ngModel)]="value7" inputId="on_label" [toggleMask]="true" />
-            <label for="on_label">Confirme a Senha</label>
-        </p-floatlabel></div>
+    <div class="inputs">
+        <p-floatlabel variant="on">
+            <p-password [(ngModel)]="value6" name="senha" #senha="ngModel" required [minlength]="6"
+                [toggleMask]="true" />
+            <label for="senha">Senha</label>
+        </p-floatlabel>
+        @if (senha.invalid && (senha.touched || formSubmitted)) {
+        <p-message severity="error" [text]="getSenhaError(senha)" styleClass="error-message"></p-message>
+        }
+    </div>
+
+    <div class="inputs">
+        <p-floatlabel variant="on">
+            <p-password [(ngModel)]="value7" name="confirmarSenha" #confirmarSenha="ngModel" required
+                [toggleMask]="true" />
+            <label for="confirmarSenha">Confirme a Senha</label>
+        </p-floatlabel>
+        @if ((confirmarSenha.invalid || value6 !== value7) && (confirmarSenha.touched || formSubmitted)) {
+        <p-message severity="error" [text]="getConfirmacaoSenhaError(confirmarSenha, senha)"
+            styleClass="error-message"></p-message>
+        }
+    </div>
 
     <p-button [label]="value === 1 ? 'Entrar' : 'Registrar'" [disabled]="!isFormValid()" (click)="onSubmit()"
         severity="primary" size="large">
