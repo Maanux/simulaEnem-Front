@@ -1,1 +1,33 @@
-<p>login works!</p>
+<div class="centraliza">
+
+    <div><img src="assets/SemFundoLogin.png" alt="Minha Imagem"></div>
+
+    <div class="h1">
+        <h1>Bem Vindo</h1>
+    </div>
+    <div>
+        <p>Entre na sua conta ou crie uma nova</p>
+    </div>
+
+    <p-selectbutton [options]="stateOptions" [(ngModel)]="value" (onChange)="onSelectButtonChange($event)"
+        optionLabel="label" optionValue="value" aria-labelledby="basic" />
+
+    <div class="inputs">
+        <p-floatlabel variant="on">
+            <input pInputText id="apelido" [(ngModel)]="value3" name="apelido" autocomplete="off" />
+            <label for="apelido">Apelido</label>
+        </p-floatlabel>
+    </div>
+
+    <div class="inputs">
+        <p-floatlabel variant="on">
+            <input pInputText id="senha" [(ngModel)]="value4" name="senha" autocomplete="off" />
+            <label for="apelido">Senha</label>
+        </p-floatlabel>
+    </div>
+
+    <div>
+        <p-button label="Entrar" [disabled]="!value3 || !value4" (click)="onSubmit()" variant="outlined"
+            size="large"></p-button>
+    </div>
+</div>
