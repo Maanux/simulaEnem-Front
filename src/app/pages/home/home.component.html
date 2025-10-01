@@ -1,0 +1,10 @@
+<div class="centraliza">
+    <h1>Criação do Simulado</h1>
+    <p>Escolha como deseja fazer seu simulado</p>
+    <p-selectbutton [options]="stateOptions" [(ngModel)]="value" (onChange)="onSelectButtonChange($event)"
+        optionLabel="label" optionValue="value" aria-labelledby="basic" />
+    <p-autocomplete [(ngModel)]="selectedNumber" [dropdown]="true" [suggestions]="filteredNumbers"
+        (completeMethod)="filterNumbers($event)" [minLength]="1"
+        placeholder="Selecione ou digite o numero de questões (1-180)">
+    </p-autocomplete>
+</div>

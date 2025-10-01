@@ -1,0 +1,73 @@
+<div class="backGround">
+    <div class="blocoCentral">
+        <h1>Historico de Simulados</h1>
+        <div class="bloco">
+            <h1>Filtros</h1>
+            <span>
+                <p>Filtre as provas por mês, ano ou título</p>
+            </span>
+            <div class="inputs">
+                <p-floatlabel variant="on">
+                    <input pInputText id="mes" [(ngModel)]="filtroMes" name="mes" autocomplete="off" />
+                    <label for="mes">Mês (ex: 04)</label>
+                </p-floatlabel>
+
+                <p-floatlabel variant="on">
+                    <input pInputText id="ano" [(ngModel)]="filtroAno" name="ano" autocomplete="off" />
+                    <label for="ano">Ano (ex: 2026)</label>
+                </p-floatlabel>
+
+                <p-floatlabel variant="on">
+                    <input pInputText id="titulo" [(ngModel)]="filtroTitulo" name="titulo" autocomplete="off" />
+                    <label for="titulo">Título</label>
+                </p-floatlabel>
+                <button pButton icon="pi pi-search" (click)="aplicarFiltros()"></button>
+            </div>
+        </div>
+
+        <div class="blocoSimuladosRealizados">
+            <h1>Simulados Realizados</h1>
+            <div class="blocoHistorico">
+                <span>
+                    <p>Titulo</p>
+                </span>
+                <span>
+                    <p>Criada em</p>
+                </span>
+                <span>
+                    <p>Total de Horas</p>
+                </span>
+                <span>
+                    <p>Acertos</p>
+                </span>
+                <span>
+                    <p>Total de Questões</p>
+                </span>
+                <span>
+                    <p>Status</p>
+                </span>
+            </div>
+
+            <div class="blocoHistorico" *ngFor="let simulado of simuladosExibidos">
+                <span>
+                    <p>{{ simulado.titulo }}</p>
+                </span>
+                <span>
+                    <p>{{ simulado.criadaEm }}</p>
+                </span>
+                <span>
+                    <p>{{ simulado.totalHoras }}</p>
+                </span>
+                <span>
+                    <p>{{ simulado.acertos }}</p>
+                </span>
+                <span>
+                    <p>{{ simulado.totalQuestoes }}</p>
+                </span>
+                <span>
+                    <p>{{ simulado.status }}</p>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
