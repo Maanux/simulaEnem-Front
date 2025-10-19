@@ -5,7 +5,7 @@
     <div class="h1">
         <h1>Bem Vindo</h1>
     </div>
-    <div>
+    <div class="pHeader">
         <p>Entre na sua conta ou crie uma nova</p>
     </div>
 
@@ -14,20 +14,22 @@
 
     <div class="inputs">
         <p-floatlabel variant="on">
-            <input pInputText id="apelido" [(ngModel)]="value3" name="apelido" autocomplete="off" />
-            <label for="apelido">Apelido</label>
+            <input pInputText id="email" [(ngModel)]="email" name="email" autocomplete="off" />
+            <label for="apelido">Email</label>
         </p-floatlabel>
     </div>
 
     <div class="inputs">
+
         <p-floatlabel variant="on">
-            <input pInputText id="senha" [(ngModel)]="value4" name="senha" autocomplete="off" />
-            <label for="apelido">Senha</label>
+                <p-password [(ngModel)]="senha" [feedback]="false"  [toggleMask]="true"/>
+            <label for="senha">Senha</label>
         </p-floatlabel>
+
     </div>
 
     <div>
-        <p-button label="Entrar" [disabled]="!value3 || !value4" (click)="onSubmit()" variant="outlined"
+        <p-button label="Entrar" [disabled]="!email || !senha" (click)="onSubmit()" variant="outlined"
             size="large"></p-button>
     </div>
 </div>

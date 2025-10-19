@@ -10,6 +10,7 @@ import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 
 import { ButtonModule } from 'primeng/button';
+import { AuthService, RegisterRequest } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -31,16 +32,23 @@ export class RegisterComponent {
     { label: 'Entrar', value: 1 },
     { label: 'Registrar', value: 2 }
   ];
-  value1: any;
-  value2: any;
-  value3: any;
-  value4: any;
-  value5: any;
-  value6: any;
-  value7: any;
+  
+  value1: any; // nome
+  value2: any; // sobrenome
+  value3: any; // apelido
+  value4: any; // email
+  value5: any; // telefone
+  value6: any; // senha
+  value7: any; // confirmar senha
+  
   formSubmitted = false;
+  loading = false;
+  errorMessage = '';
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   onSelectButtonChange(event: any) {
     if (event.value === 1) {
@@ -48,6 +56,7 @@ export class RegisterComponent {
       this.value = 2;
     }
   }
+
 
   getNomeError(nomeControl: any): string {
     if (nomeControl?.hasError('required')) {
@@ -122,19 +131,46 @@ export class RegisterComponent {
 
   onSubmit() {
     this.formSubmitted = true;
-    if (this.isFormValid()) {
-      if (this.value === 1) {
-        console.log('Login submitted:', { apelido: this.value3, senha: this.value4 });
-      } else {
-        console.log('Register submitted:', {
-          nome: this.value1,
-          sobrenome: this.value2,
-          apelido: this.value3,
-          email: this.value4,
-          telefone: this.value5,
-          senha: this.value6
-        });
-      }
+    
+    if (!this.isFormValid()) {
+      return;
     }
+
+    this.loading = true;
+    this.errorMessage = '';
+
+    const telefoneLimpo = this.value5.replace(/\D/g, '');
+
+    const registerData: RegisterRequest = {
+      nome: this.value1,
+      sobrenome: this.value2,
+      email: this.value4,
+      telefone: telefoneLimpo,
+      apelido: this.value3,
+      senha: this.value6
+    };
+
+    this.authService.register(registerData).subscribe({
+      next: (response) => {
+        console.log('Registro realizado com sucesso!');
+        console.log('Token:', response.token);
+        console.log('UUID:', response.uuid);
+        
+
+        this.router.navigate(['/home']);
+      },
+      error: (error) => {
+        console.error('Erro no registro:', error);
+        if (typeof error.error === 'string') {
+          this.errorMessage = error.error; 
+        } else {
+          this.errorMessage = error.error?.message || 'Erro ao registrar usuário';
+        }
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
   }
 }

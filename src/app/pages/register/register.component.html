@@ -88,6 +88,12 @@
         }
     </div>
 
+@if (errorMessage) {
+<div style="background: #f8d7da; color: #721c24; padding: 12px; border-radius: 6px; margin: 10px 0; border: 1px solid #f5c6cb; text-align: center;">
+    <i class="pi pi-exclamation-triangle" style="margin-right: 8px;"></i>
+    {{ errorMessage }}
+</div>
+}
     <p-button [label]="value === 1 ? 'Entrar' : 'Registrar'" [disabled]="!isFormValid()" (click)="onSubmit()"
         severity="primary" size="large">
     </p-button>
