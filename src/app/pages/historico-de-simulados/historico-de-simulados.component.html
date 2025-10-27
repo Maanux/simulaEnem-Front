@@ -1,73 +1,155 @@
 <div class="backGround">
-    <div class="blocoCentral">
-        <h1>Historico de Simulados</h1>
-        <div class="bloco">
-            <h1>Filtros</h1>
-            <span>
-                <p>Filtre as provas por mês, ano ou título</p>
-            </span>
-            <div class="inputs">
-                <p-floatlabel variant="on">
-                    <input pInputText id="mes" [(ngModel)]="filtroMes" name="mes" autocomplete="off" />
-                    <label for="mes">Mês (ex: 04)</label>
-                </p-floatlabel>
+  <div class="blocoCentral">
+    <h1>Histórico de Simulados</h1>
 
-                <p-floatlabel variant="on">
-                    <input pInputText id="ano" [(ngModel)]="filtroAno" name="ano" autocomplete="off" />
-                    <label for="ano">Ano (ex: 2026)</label>
-                </p-floatlabel>
-
-                <p-floatlabel variant="on">
-                    <input pInputText id="titulo" [(ngModel)]="filtroTitulo" name="titulo" autocomplete="off" />
-                    <label for="titulo">Título</label>
-                </p-floatlabel>
-                <button pButton icon="pi pi-search" (click)="aplicarFiltros()"></button>
-            </div>
-        </div>
-
-        <div class="blocoSimuladosRealizados">
-            <h1>Simulados Realizados</h1>
-            <div class="blocoHistorico">
-                <span>
-                    <p>Titulo</p>
-                </span>
-                <span>
-                    <p>Criada em</p>
-                </span>
-                <span>
-                    <p>Total de Horas</p>
-                </span>
-                <span>
-                    <p>Acertos</p>
-                </span>
-                <span>
-                    <p>Total de Questões</p>
-                </span>
-                <span>
-                    <p>Status</p>
-                </span>
-            </div>
-
-            <div class="blocoHistorico" *ngFor="let simulado of simuladosExibidos">
-                <span>
-                    <p>{{ simulado.titulo }}</p>
-                </span>
-                <span>
-                    <p>{{ simulado.criadaEm }}</p>
-                </span>
-                <span>
-                    <p>{{ simulado.totalHoras }}</p>
-                </span>
-                <span>
-                    <p>{{ simulado.acertos }}</p>
-                </span>
-                <span>
-                    <p>{{ simulado.totalQuestoes }}</p>
-                </span>
-                <span>
-                    <p>{{ simulado.status }}</p>
-                </span>
-            </div>
-        </div>
+    <div *ngIf="loading" class="loading-container">
+      <p>Carregando provas...</p>
     </div>
+
+    <div *ngIf="error" class="error-container">
+      <p>{{ error }}</p>
+      <p-button
+        label="Tentar novamente"
+        (onClick)="carregarProvas()"
+        severity="danger"
+      />
+    </div>
+
+    <div *ngIf="!loading && !error">
+      <div class="bloco">
+        <h1>Filtros</h1>
+        <span>
+          <p>Filtre as provas por mês, ano ou título</p>
+        </span>
+        <div class="inputs">
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="dia"
+              [(ngModel)]="filtroDia"
+              name="dia"
+              autocomplete="off"
+              (ngModelChange)="aplicarFiltros()"
+            />
+            <label for="dia">Dia (ex: 15)</label>
+          </p-floatlabel>
+
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="mes"
+              [(ngModel)]="filtroMes"
+              name="mes"
+              autocomplete="off"
+              (ngModelChange)="aplicarFiltros()"
+            />
+            <label for="mes">Mês (ex: 04)</label>
+          </p-floatlabel>
+
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="ano"
+              [(ngModel)]="filtroAno"
+              name="ano"
+              autocomplete="off"
+              (ngModelChange)="aplicarFiltros()"
+            />
+            <label for="ano">Ano (ex: 2025)</label>
+          </p-floatlabel>
+
+          <p-floatlabel variant="on">
+            <input
+              pInputText
+              id="titulo"
+              [(ngModel)]="filtroTitulo"
+              name="titulo"
+              autocomplete="off"
+              (ngModelChange)="aplicarFiltros()"
+            />
+            <label for="titulo">Título</label>
+          </p-floatlabel>
+
+          <p-floatlabel variant="on">
+            <p-multiSelect
+              id="status"
+              [options]="statusOptions"
+              [(ngModel)]="filtroStatusSelecionados"
+              (onChange)="aplicarFiltros()"
+              optionLabel="label"
+              optionValue="value"
+              display="chip"
+              placeholder=""
+            ></p-multiSelect>
+            <label for="status">Status</label>
+          </p-floatlabel>
+        </div>
+      </div>
+
+      <div class="blocoSimuladosRealizados">
+        <h1>Simulados Realizados</h1>
+
+        <div class="blocoHistorico header">
+          <span><p>Título</p></span>
+          <span><p>Criada em</p></span>
+          <span><p>Total de Horas</p></span>
+          <span><p>Total de Questões</p></span>
+          <span><p>Status</p></span>
+          <span><p>Ações</p></span>
+        </div>
+
+        <div *ngIf="simuladosExibidos.length === 0" class="vazio">
+          <p>Nenhuma prova encontrada</p>
+        </div>
+
+        <div
+          class="blocoHistorico"
+          *ngFor="let simulado of simuladosExibidos"
+          [class.em-andamento]="simulado.status === 'EM_ANDAMENTO'"
+          [class.pausada]="simulado.status === 'PAUSADA'"
+          [class.finalizada]="simulado.status === 'FINALIZADA'"
+        >
+          <span>
+            <p>{{ simulado.titulo }}</p>
+          </span>
+          <span>
+            <p>{{ simulado.criadaEm }}</p>
+          </span>
+          <span>
+            <p>{{ simulado.totalHoras }}</p>
+          </span>
+          <span>
+            <p>{{ simulado.totalQuestoes }}</p>
+          </span>
+          <span>
+            <p
+              [class.status-em-andamento]="simulado.status === 'EM_ANDAMENTO'"
+              [class.status-pausada]="simulado.status === 'PAUSADA'"
+              [class.status-finalizada]="simulado.status === 'FINALIZADA'"
+            >
+              {{ simulado.status }}
+            </p>
+          </span>
+          <span class="acoes">
+            <p-button
+              *ngIf="simulado.status !== 'FINALIZADA'"
+              label="Retomar"
+              icon="pi pi-play"
+              (click)="retomarProva(simulado.uuid)"
+              severity="primary"
+              size="small"
+            />
+            <p-button
+              *ngIf="simulado.status === 'FINALIZADA'"
+              label="Ver Resultado"
+              icon="pi pi-chart-bar"
+              (onClick)="verResultado(simulado.uuid)"
+              severity="success"
+              size="small"
+            />
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

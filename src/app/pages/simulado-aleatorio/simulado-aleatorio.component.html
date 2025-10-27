@@ -1,21 +1,28 @@
 <div class="backGround">
-    <div class="navBar"><img src="assets/logo22.png" alt="Minha Imagem">
+    <div class="navBar">
+        <img src="assets/logo22.png" alt="Minha Imagem">
         <div class="navDireita">
             <p>Teste</p>
             <p>teste2</p>
             <p>teste3</p>
         </div>
-
     </div>
+    
     <div class="centraliza">
-
         <h1>Criação do Simulado</h1>
         <p>Escolha como deseja fazer seu simulado</p>
-        <p-selectbutton [options]="stateOptions" [(ngModel)]="value" (onChange)="onSelectButtonChange($event)"
-            optionLabel="label" optionValue="value" aria-labelledby="basic" />
+        
+        <p-selectbutton 
+            [options]="stateOptions" 
+            [(ngModel)]="value" 
+            (onChange)="onSelectButtonChange($event)"
+            optionLabel="label" 
+            optionValue="value" 
+            aria-labelledby="basic" 
+        />
+        
         <div class="bloco">
             <div class="alinharEsquerda">
-
                 <h1>Simulado Aleatório</h1>
                 <p>Escolha o numero de questões que o simulado deve conter</p>
                 <span>
@@ -23,12 +30,31 @@
                     <p>Quantidade de questões</p>
                 </span>
             </div>
-            <p-autocomplete [(ngModel)]="selectedNumber" [dropdown]="true" [suggestions]="filteredNumbers"
-                (completeMethod)="filterNumbers($event)" [minLength]="1"
-                placeholder="Selecione ou digite o numero de questões (1-180)">
-            </p-autocomplete>
-            <div><p-button label="Gerar Simulado" [disabled]="!isNumberValid" (click)="gerarSimulado()"
-                    variant="outlined" size="large"></p-button></div>
+            
+            <p-autocomplete 
+                [(ngModel)]="selectedNumber" 
+                [dropdown]="true" 
+                [suggestions]="filteredNumbers"
+                (completeMethod)="filterNumbers($event)" 
+                [minLength]="1"
+                placeholder="Selecione ou digite o numero de questões (1-180)"
+                [disabled]="loading"
+            />
+            
+            <div *ngIf="errorMessage" style="color: red; margin-top: 10px;">
+                {{ errorMessage }}
+            </div>
+            
+            <div>
+                <p-button 
+                    [label]="loading ? 'Gerando...' : 'Gerar Simulado'" 
+                    [disabled]="!isNumberValid || loading" 
+                    (click)="gerarSimulado()"
+                    [loading]="loading"
+                    variant="outlined" 
+                    size="large"
+                />
+            </div>
         </div>
     </div>
 </div>

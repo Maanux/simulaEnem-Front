@@ -6,14 +6,16 @@ import { SimuladoPersonalizadoComponent } from './pages/simulado-personalizado/s
 import { SimuladoAleatorioComponent } from './pages/simulado-aleatorio/simulado-aleatorio.component';
 import { HistoricoDeSimuladosComponent } from './pages/historico-de-simulados/historico-de-simulados.component';
 import { ProvaComponent } from './pages/prova/prova.component';
+import { ResultadoProvaComponent } from './pages/resultado-prova/resultado-prova.component';
+
 export const routes: Routes = [
-    { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-    { path: 'home', component: HomeComponent },
-    { path: 'simuladoPersonalizado', component: SimuladoPersonalizadoComponent },
-    { path: 'simuladoAleatorio', component: SimuladoAleatorioComponent },
-    { path: 'historicoDeSimulados', component: HistoricoDeSimuladosComponent },
-    { path: "prova", component: ProvaComponent },
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
-    { path: '**', redirectTo: 'login' }
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'simuladoPersonalizado', component: SimuladoPersonalizadoComponent },
+  { path: 'simuladoAleatorio', component: SimuladoAleatorioComponent },
+  { path: 'historicoDeSimulados', component: HistoricoDeSimuladosComponent },
+  { path: 'provas/:provaUuid/questao/:numero', component: ProvaComponent },
+  { path: 'resultadoProva/:provaUuid', component: ResultadoProvaComponent },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'login' },
 ];

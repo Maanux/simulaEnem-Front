@@ -1,37 +1,85 @@
-<div *ngIf="provaQuestao" class="backGround">
-    <div class="blocoGeral">
-        <div class="blocoInfo">
-            <div class="blocoTitulo">
-                <h1>{{provaQuestao.questao.title}}</h1>
-            </div>
-            <div class="blocoDisciplina">{{provaQuestao.questao.discipline}}</div>
-            <div class="blocoAno">{{provaQuestao.questao.year}}</div>
-        </div>
+<div *ngIf="loading" class="loading">Carregando questão...</div>
 
-        <div class="blocoQuestao">
-            <div class="blocoNumeroQuestao">Questão do Simulado: {{provaQuestao.ordem}}</div>
+<div *ngIf="error" class="error">
+  {{ error }}
+</div>
 
-            <div class="blocoContexto" [innerHTML]="provaQuestao.questao.context"></div>
-
-            <div *ngIf="provaQuestao.questao.files && provaQuestao.questao.files.length > 0" class="blocoFiles">
-                <img *ngFor="let fileUrl of provaQuestao.questao.files" [src]="fileUrl" alt="Imagem da questão">
-            </div>
-
-            <div class="blocoAlternativasIntro">{{provaQuestao.questao.alternativesIntroduction}}</div>
-
-            <div class="flex flex-col gap-4">
-                <div *ngFor="let category of categories" class="field-checkbox">
-                    <p-radiobutton [inputId]="category.key" name="alternativa" [value]="category"
-                        [(ngModel)]="selectedCategory" />
-                    <label [for]="category.key" class="ml-2">{{ category.name }}</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="blocoBotoes">
-            <div><p-button label="Questão Anterior" (onClick)="voltarQuestao()" [disabled]="questaoId === 1" /></div>
-            <div><p-button label="Pausar Teste" /></div>
-            <div><p-button label="Próxima Questão" (onClick)="irProximaQuestao()" /></div>
-        </div>
+<div *ngIf="provaQuestao && statusCarregado" class="backGround">
+  <div class="blocoGeral">
+    <div class="blocoInfo">
+      <div class="blocoTitulo">
+        <h1>{{ provaQuestao.questao.title }}</h1>
+      </div>
+      <div class="blocoDisciplina">{{ provaQuestao.questao.discipline }}</div>
+      <div class="blocoAno">{{ provaQuestao.questao.year }}</div>
     </div>
+
+    <div class="blocoQuestao">
+      <div class="blocoNumeroQuestao">
+        Questão do Simulado: {{ provaQuestao.ordem }} de {{ totalQuestoes }}
+      </div>
+
+      <div
+        class="blocoContexto"
+        [innerHTML]="provaQuestao.questao.context"
+      ></div>
+
+      <div
+        *ngIf="
+          provaQuestao.questao.files && provaQuestao.questao.files.length > 0
+        "
+        class="blocoFiles"
+      >
+        <img
+          *ngFor="let fileUrl of provaQuestao.questao.files"
+          [src]="fileUrl"
+          alt="Imagem da questão"
+        />
+      </div>
+
+      <div class="blocoAlternativasIntro">
+        {{ provaQuestao.questao.alternativesIntroduction }}
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <div *ngFor="let category of categories" class="field-checkbox">
+          <p-radiobutton
+            [inputId]="category.key"
+            name="alternativa"
+            [value]="category.key"
+            [(ngModel)]="alternativaSelecionada"
+          ></p-radiobutton>
+          <label [for]="category.key" class="ml-2">{{ category.name }}</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="blocoBotoes">
+      <div>
+        <p-button
+          label="Questão Anterior"
+          (onClick)="voltarQuestao()"
+          [disabled]="numeroQuestao === 1"
+          severity="secondary"
+        ></p-button>
+      </div>
+
+      <div>
+        <p-button
+          label="Pausar Teste"
+          (onClick)="pausarProva()"
+          severity="info"
+        ></p-button>
+      </div>
+
+      <div>
+        <p-button
+          [label]="textoBotaoPrincipal"
+          (onClick)="irProximaQuestao()"
+          [severity]="isUltimaQuestao ? 'success' : 'primary'"
+        >
+        </p-button>
+      </div>
+    </div>
+  </div>
 </div>

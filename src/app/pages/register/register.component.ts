@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { FloatLabelModule } from "primeng/floatlabel";
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputMaskModule } from 'primeng/inputmask';
 import { MessageModule } from 'primeng/message';
 
@@ -21,34 +21,33 @@ import { AuthService, RegisterRequest } from '../../services/auth.service';
     FormsModule,
     FloatLabelModule,
     InputMaskModule,
-    MessageModule, PasswordModule, ButtonModule
+    MessageModule,
+    PasswordModule,
+    ButtonModule,
   ],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
   value: number = 2;
   stateOptions = [
     { label: 'Entrar', value: 1 },
-    { label: 'Registrar', value: 2 }
+    { label: 'Registrar', value: 2 },
   ];
-  
-  value1: any; // nome
-  value2: any; // sobrenome
-  value3: any; // apelido
-  value4: any; // email
-  value5: any; // telefone
-  value6: any; // senha
-  value7: any; // confirmar senha
-  
+
+  value1: any;
+  value2: any;
+  value3: any;
+  value4: any;
+  value5: any;
+  value6: any;
+  value7: any;
+
   formSubmitted = false;
   loading = false;
   errorMessage = '';
 
-  constructor(
-    private router: Router,
-    private authService: AuthService
-  ) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   onSelectButtonChange(event: any) {
     if (event.value === 1) {
@@ -56,7 +55,6 @@ export class RegisterComponent {
       this.value = 2;
     }
   }
-
 
   getNomeError(nomeControl: any): string {
     if (nomeControl?.hasError('required')) {
@@ -123,15 +121,22 @@ export class RegisterComponent {
     if (this.value === 1) {
       return !!this.value3 && !!this.value4;
     } else {
-      return !!this.value1 && !!this.value2 && !!this.value3 && !!this.value4 &&
-        !!this.value5 && !!this.value6 && !!this.value7 &&
-        this.value6 === this.value7;
+      return (
+        !!this.value1 &&
+        !!this.value2 &&
+        !!this.value3 &&
+        !!this.value4 &&
+        !!this.value5 &&
+        !!this.value6 &&
+        !!this.value7 &&
+        this.value6 === this.value7
+      );
     }
   }
 
   onSubmit() {
     this.formSubmitted = true;
-    
+
     if (!this.isFormValid()) {
       return;
     }
@@ -147,7 +152,7 @@ export class RegisterComponent {
       email: this.value4,
       telefone: telefoneLimpo,
       apelido: this.value3,
-      senha: this.value6
+      senha: this.value6,
     };
 
     this.authService.register(registerData).subscribe({
@@ -155,22 +160,22 @@ export class RegisterComponent {
         console.log('Registro realizado com sucesso!');
         console.log('Token:', response.token);
         console.log('UUID:', response.uuid);
-        
 
-        this.router.navigate(['/home']);
+        this.router.navigate(['/simuladoAleatorio']);
       },
       error: (error) => {
         console.error('Erro no registro:', error);
         if (typeof error.error === 'string') {
-          this.errorMessage = error.error; 
+          this.errorMessage = error.error;
         } else {
-          this.errorMessage = error.error?.message || 'Erro ao registrar usuário';
+          this.errorMessage =
+            error.error?.message || 'Erro ao registrar usuário';
         }
         this.loading = false;
       },
       complete: () => {
         this.loading = false;
-      }
+      },
     });
   }
 }
