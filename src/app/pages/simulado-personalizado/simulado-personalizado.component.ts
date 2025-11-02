@@ -6,6 +6,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { ProvaService, DadosProvaCriada } from '../../services/prova.service';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-simulado-personalizado',
@@ -16,6 +17,7 @@ import { ProvaService, DadosProvaCriada } from '../../services/prova.service';
     SelectButtonModule,
     ButtonModule,
     CommonModule,
+    CardModule,
   ],
   templateUrl: './simulado-personalizado.component.html',
   styleUrl: './simulado-personalizado.component.css',
@@ -40,6 +42,14 @@ export class SimuladoPersonalizadoComponent {
   errorMessage = '';
 
   constructor(private router: Router, private provaService: ProvaService) {}
+
+  goToHistorico() {
+    this.router.navigate(['/historicoDeSimulados']);
+  }
+
+  goToPerfil() {
+    this.router.navigate(['/perfil']);
+  }
 
   onSelectButtonChange(event: any) {
     if (event.value === 1) {

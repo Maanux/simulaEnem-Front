@@ -7,7 +7,7 @@ import { InputText } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-
+import { CardModule } from 'primeng/card';
 import { MultiSelectModule } from 'primeng/multiselect';
 
 interface ProvaUsuarioDTO {
@@ -40,6 +40,7 @@ interface SimuladoExibicao {
     InputText,
     ButtonModule,
     MultiSelectModule,
+    CardModule,
   ],
   templateUrl: './historico-de-simulados.component.html',
   styleUrl: './historico-de-simulados.component.css',
@@ -74,9 +75,17 @@ export class HistoricoDeSimuladosComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.carregarProvas();
+    if (typeof window !== 'undefined') {
+      this.carregarProvas();
+    }
+  }
+  goToSimulados() {
+    this.router.navigate(['/simuladoAleatorio']);
   }
 
+  goToPerfil() {
+    this.router.navigate(['/perfil']);
+  }
   carregarProvas(): void {
     this.loading = true;
     this.error = null;

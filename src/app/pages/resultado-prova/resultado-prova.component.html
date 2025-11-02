@@ -1,5 +1,19 @@
 <div *ngIf="loading">Carregando...</div>
 <div *ngIf="errorMessage">{{ errorMessage }}</div>
+<p-card class="navBar">
+  <div class="nav-content">
+    <img src="assets/logo22.png" alt="Minha Imagem" />
+    <div class="navDireita">
+      <p (click)="goToSimulados()" style="cursor: pointer">
+        Criação de Simulados
+      </p>
+      <p (click)="goToHistorico()" style="cursor: pointer">
+        Historico de Simulados
+      </p>
+      <p (click)="goToPerfil()" style="cursor: pointer">Perfil</p>
+    </div>
+  </div>
+</p-card>
 <div class="estatisticas">
   <div *ngIf="estatisticas">
     <div class="bloco1">
@@ -134,3 +148,6 @@
     </div>
   </div>
 </div>
+<p-card header="" class="footer">
+  <p class="m-0">©2025 SimulaEnem. Todos os Direitos Reservados Maanux</p>
+</p-card>

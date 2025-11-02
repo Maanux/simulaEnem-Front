@@ -9,6 +9,7 @@ import { ChartModule } from 'primeng/chart';
 import { AccordionModule } from 'primeng/accordion';
 import { BadgeModule } from 'primeng/badge';
 import { OverlayBadgeModule } from 'primeng/overlaybadge';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-resultado-prova',
@@ -40,12 +41,24 @@ export class ResultadoProvaComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private resultadoService: ResultadoProvaService
+    private resultadoService: ResultadoProvaService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.provaUuid = this.route.snapshot.params['provaUuid'];
     this.loadData();
+  }
+
+  goToSimulados() {
+    this.router.navigate(['/simuladoAleatorio']);
+  }
+
+  goToHistorico() {
+    this.router.navigate(['/historicoDeSimulados']);
+  }
+  goToPerfil() {
+    this.router.navigate(['/perfil']);
   }
 
   formatarSegundosParaMinutos(segundos: number): string {

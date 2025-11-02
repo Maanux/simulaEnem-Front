@@ -9,6 +9,8 @@
   font-family: "Inter", sans-serif;
   min-width: 556px;
   min-height: 864px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .centraliza::before {
@@ -29,56 +31,50 @@
   height: auto;
 }
 
-@media (max-width: 400px) {
-  .centraliza {
-    width: 353px;
-    height: 848px;
-    margin: auto;
-  }
+.navBar {
+  min-width: 556px;
+}
+.navBar img {
+  width: 11%;
 }
 
-h1 {
-  color: rgb(102, 102, 102);
-  font-size: 2.25rem;
-  font-weight: 700;
+:host ::ng-deep .navBar .p-card-body {
+  padding: 1.2rem;
 }
 
-.h1 {
-  margin-top: -4rem;
-  margin-bottom: -1.5rem;
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-p {
-  color: rgb(102, 102, 102);
-  font-size: 1rem;
+.navDireita {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  font-size: 1.3rem;
 }
 
 :host ::ng-deep .p-selectbutton {
   height: 3rem;
+  margin: 1rem auto;
 }
 
-p-selectbutton {
-  margin-bottom: 1rem;
+:host ::ng-deep .p-card {
+  margin: 1rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
 }
-
-.inputs {
-  margin-bottom: 1rem;
-}
-
 :host ::ng-deep .p-button {
-  background: rgb(3, 3, 3);
-  color: white;
-  border: none;
-  width: 25.5rem;
+  display: block;
+  margin: 1rem auto;
+  padding-left: 5rem;
+  padding-right: 5rem;
 }
 
-:host ::ng-deep .p-floatlabel input {
-  font-size: 1.2rem;
-  padding: 1rem;
-  height: 3.2rem;
-  width: 25.5rem;
-}
-
-:host ::ng-deep .p-floatlabel label {
-  font-size: 1.1rem;
+.footer {
+  background-color: rgb(247, 246, 246);
+  text-align: center;
+  padding: 0.5rem;
+  min-width: 556px;
 }
