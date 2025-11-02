@@ -3,13 +3,14 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { FloatLabelModule } from "primeng/floatlabel";
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputMaskModule } from 'primeng/inputmask';
 import { MessageModule } from 'primeng/message';
 
 import { PasswordModule } from 'primeng/password';
 
 import { ButtonModule } from 'primeng/button';
+import { AuthService, RegisterRequest } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -20,17 +21,20 @@ import { ButtonModule } from 'primeng/button';
     FormsModule,
     FloatLabelModule,
     InputMaskModule,
-    MessageModule, PasswordModule, ButtonModule
+    MessageModule,
+    PasswordModule,
+    ButtonModule,
   ],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
   value: number = 2;
   stateOptions = [
     { label: 'Entrar', value: 1 },
-    { label: 'Registrar', value: 2 }
+    { label: 'Registrar', value: 2 },
   ];
+
   value1: any;
   value2: any;
   value3: any;
@@ -38,9 +42,12 @@ export class RegisterComponent {
   value5: any;
   value6: any;
   value7: any;
-  formSubmitted = false;
 
-  constructor(private router: Router) { }
+  formSubmitted = false;
+  loading = false;
+  errorMessage = '';
+
+  constructor(private router: Router, private authService: AuthService) {}
 
   onSelectButtonChange(event: any) {
     if (event.value === 1) {
@@ -114,27 +121,61 @@ export class RegisterComponent {
     if (this.value === 1) {
       return !!this.value3 && !!this.value4;
     } else {
-      return !!this.value1 && !!this.value2 && !!this.value3 && !!this.value4 &&
-        !!this.value5 && !!this.value6 && !!this.value7 &&
-        this.value6 === this.value7;
+      return (
+        !!this.value1 &&
+        !!this.value2 &&
+        !!this.value3 &&
+        !!this.value4 &&
+        !!this.value5 &&
+        !!this.value6 &&
+        !!this.value7 &&
+        this.value6 === this.value7
+      );
     }
   }
 
   onSubmit() {
     this.formSubmitted = true;
-    if (this.isFormValid()) {
-      if (this.value === 1) {
-        console.log('Login submitted:', { apelido: this.value3, senha: this.value4 });
-      } else {
-        console.log('Register submitted:', {
-          nome: this.value1,
-          sobrenome: this.value2,
-          apelido: this.value3,
-          email: this.value4,
-          telefone: this.value5,
-          senha: this.value6
-        });
-      }
+
+    if (!this.isFormValid()) {
+      return;
     }
+
+    this.loading = true;
+    this.errorMessage = '';
+
+    const telefoneLimpo = this.value5.replace(/\D/g, '');
+
+    const registerData: RegisterRequest = {
+      nome: this.value1,
+      sobrenome: this.value2,
+      email: this.value4,
+      telefone: telefoneLimpo,
+      apelido: this.value3,
+      senha: this.value6,
+    };
+
+    this.authService.register(registerData).subscribe({
+      next: (response) => {
+        console.log('Registro realizado com sucesso!');
+        console.log('Token:', response.token);
+        console.log('UUID:', response.uuid);
+
+        this.router.navigate(['/simuladoAleatorio']);
+      },
+      error: (error) => {
+        console.error('Erro no registro:', error);
+        if (typeof error.error === 'string') {
+          this.errorMessage = error.error;
+        } else {
+          this.errorMessage =
+            error.error?.message || 'Erro ao registrar usuário';
+        }
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
   }
 }

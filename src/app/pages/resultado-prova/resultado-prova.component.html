@@ -1,0 +1,153 @@
+<div *ngIf="loading">Carregando...</div>
+<div *ngIf="errorMessage">{{ errorMessage }}</div>
+<p-card class="navBar">
+  <div class="nav-content">
+    <img src="assets/logo22.png" alt="Minha Imagem" />
+    <div class="navDireita">
+      <p (click)="goToSimulados()" style="cursor: pointer">
+        Criação de Simulados
+      </p>
+      <p (click)="goToHistorico()" style="cursor: pointer">
+        Historico de Simulados
+      </p>
+      <p (click)="goToPerfil()" style="cursor: pointer">Perfil</p>
+    </div>
+  </div>
+</p-card>
+<div class="estatisticas">
+  <div *ngIf="estatisticas">
+    <div class="bloco1">
+      <div class="header">
+        <div class="titulo">
+          <h2>{{ estatisticas.titulo }}</h2>
+          <p>
+            {{ estatisticas.dataInicio | date : "dd/MM/yyyy HH:mm:ss" }} -
+            {{ estatisticas.dataFim | date : "dd/MM/yyyy HH:mm:ss" }}
+          </p>
+        </div>
+        <div class="total">
+          <p-card header="">
+            <p class="m-0">
+              Tempo total:
+              {{ formatarSegundosParaMinutos(estatisticas.tempoTotalSegundos) }}
+            </p>
+          </p-card>
+        </div>
+      </div>
+    </div>
+    <div class="bloco2">
+      <p-card header="Total de questões" class="card-total">
+        <p class="m-0">
+          {{ estatisticas.totalQuestoes }}
+        </p>
+      </p-card>
+      <p-card header="Acertos" class="card-acertos">
+        <p class="m-0">
+          {{ estatisticas.acertos }}
+        </p>
+      </p-card>
+      <p-card header="Erros" class="card-erros">
+        <p class="m-0">
+          {{ estatisticas.erros }}
+        </p>
+      </p-card>
+      <p-card header="Aproveitamento" class="card-aproveitamento">
+        <p class="m-0">{{ estatisticas.aproveitamento }}%</p>
+      </p-card>
+    </div>
+
+    <div class="bloco3">
+      <h3>Comparativo por Área de Conhecimento</h3>
+      <div class="areas">
+        <div class="area-card">
+          <div class="area-header">
+            <span class="area-title">Humanas</span>
+            <span class="area-stats">
+              {{ estatisticas.comparativoAreas.humanas.acertos }}/{{
+                estatisticas.comparativoAreas.humanas.total
+              }}
+            </span>
+          </div>
+          <p-progressBar
+            class="humanas-bar"
+            [value]="estatisticas.comparativoAreas.humanas.aproveitamento"
+          ></p-progressBar>
+        </div>
+
+        <div class="area-card">
+          <div class="area-header">
+            <span class="area-title">Exatas</span>
+            <span class="area-stats">
+              {{ estatisticas.comparativoAreas.exatas.acertos }}/{{
+                estatisticas.comparativoAreas.exatas.total
+              }}
+            </span>
+          </div>
+          <p-progressBar
+            class="exatas-bar"
+            [value]="estatisticas.comparativoAreas.exatas.aproveitamento"
+          ></p-progressBar>
+        </div>
+      </div>
+    </div>
+
+    <div class="bloco4">
+      <p-chart type="bar" [data]="data" [options]="options" class="h-[5rem]" />
+    </div>
+
+    <div class="bloco5" *ngIf="questoes.length">
+      <h3>Questões Respondidas</h3>
+
+      <p-accordion [multiple]="true">
+        <p-accordion-panel
+          *ngFor="let q of questoes; let i = index"
+          [value]="i.toString()"
+        >
+          <p-accordion-header>
+            {{ q.ordem }}. {{ q.questaoCompletaDTO.title }} ({{
+              q.questaoCompletaDTO.discipline
+            }})
+          </p-accordion-header>
+
+          <p-accordion-content>
+            <div class="conteudo-questao">
+              <p>
+                <strong>Contexto:</strong> {{ q.questaoCompletaDTO.context }}
+              </p>
+              <p>
+                <strong>Enunciado:</strong>
+                {{ q.questaoCompletaDTO.alternativesIntroduction }}
+              </p>
+
+              <ul>
+                <li *ngFor="let a of q.questaoCompletaDTO.alternativas">
+                  {{ a.letter }}: {{ a.text }}
+                  <span *ngIf="a.correct" class="correta">(Correta)</span>
+                  <img
+                    *ngIf="a.file"
+                    [src]="a.file"
+                    alt="imagem"
+                    style="max-width: 200px; display: block; margin-top: 5px"
+                  />
+                </li>
+              </ul>
+
+              <p>
+                <strong>Resposta escolhida:</strong>
+                {{ q.alternativaRespondida }}
+                <span [ngClass]="q.correta ? 'tag-correta' : 'tag-incorreta'">
+                  {{ q.correta ? "Correta" : "Incorreta" }}
+                </span>
+              </p>
+
+              <p><strong>Tempo gasto:</strong> {{ q.tempoGasto }} segundos</p>
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
+      </p-accordion>
+    </div>
+  </div>
+</div>
+<p-card header="" class="footer">
+  <p class="m-0">©2025 SimulaEnem. Todos os Direitos Reservados Maanux</p>
+</p-card>

@@ -1,0 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.backGround {
+  min-width: 556px;
+  min-height: 864px;
+  height: 100vh;
+}
+
+.backGround::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 101%;
+  background: url("/assets/fundo.png") no-repeat center center;
+  background-size: cover;
+  opacity: 0.02;
+  z-index: -1;
+}
+
+img {
+  width: 11%;
+}
+
+:host ::ng-deep .navBar .p-card-body {
+  padding: 1.2rem;
+}
+
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navDireita {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  font-size: 1.3rem;
+}
+
+.centraliza {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 90px);
+  font-family: "Inter", sans-serif;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+.bloco {
+  padding: 2.2rem;
+  width: 100%;
+  max-width: 1300px;
+  box-sizing: border-box;
+}
+
+.bloco h1 {
+  margin-top: 0rem;
+}
+
+.alinharEsquerda {
+  text-align: left;
+}
+
+span {
+  font-weight: bold;
+  color: rgb(102, 102, 102);
+  font-size: 1.1rem;
+}
+
+:host ::ng-deep .p-autocomplete,
+:host ::ng-deep .p-button {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+:host ::ng-deep .p-selectbutton {
+  margin-bottom: 1.2rem;
+  height: 3.5rem;
+}
+
+.footer {
+  background-color: rgb(247, 246, 246);
+  text-align: center;
+  padding: 0.5rem;
+}

@@ -1,0 +1,70 @@
+<div class="backGround">
+  <p-card class="navBar">
+    <div class="nav-content">
+      <img src="assets/logo22.png" alt="Minha Imagem" />
+      <div class="navDireita">
+        <p (click)="goToHistorico()" style="cursor: pointer">
+          Historico de Simulados
+        </p>
+        <p (click)="goToPerfil()" style="cursor: pointer">Perfil</p>
+      </div>
+    </div>
+  </p-card>
+
+  <div class="centraliza">
+    <h1>Criação do Simulado</h1>
+    <p>Escolha como deseja fazer seu simulado</p>
+
+    <p-selectbutton
+      [options]="stateOptions"
+      [(ngModel)]="value"
+      (onChange)="onSelectButtonChange($event)"
+      optionLabel="label"
+      optionValue="value"
+      aria-labelledby="basic"
+    />
+
+    <p-card header="" class="bloco">
+      <div class="alinharEsquerda">
+        <h1>Simulado Aleatório</h1>
+        <p>Escolha o número de questões que o simulado deve conter</p>
+        <span>
+          <p>
+            O simulado pode ter no máximo 180 questões ({{
+              selectedNumber ? selectedNumber : 0
+            }}/180)
+          </p>
+          <p>Quantidade de questões</p>
+        </span>
+      </div>
+
+      <p-autocomplete
+        [(ngModel)]="selectedNumber"
+        [dropdown]="true"
+        [suggestions]="filteredNumbers"
+        (completeMethod)="filterNumbers($event)"
+        [minLength]="1"
+        placeholder="Selecione ou digite o número de questões (1–180)"
+        [disabled]="loading"
+      />
+
+      <div *ngIf="errorMessage" style="color: red; margin-top: 10px">
+        {{ errorMessage }}
+      </div>
+
+      <div>
+        <p-button
+          [label]="loading ? 'Gerando...' : 'Gerar Simulado'"
+          [disabled]="!isNumberValid || loading"
+          (click)="gerarSimulado()"
+          [loading]="loading"
+          variant="outlined"
+          size="large"
+        />
+      </div>
+    </p-card>
+  </div>
+  <p-card header="" class="footer">
+    <p class="m-0">©2025 SimulaEnem. Todos os Direitos Reservados Maanux</p>
+  </p-card>
+</div>

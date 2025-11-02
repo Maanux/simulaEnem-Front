@@ -1,0 +1,82 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+.centraliza {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "Inter", sans-serif;
+  min-width: 556px;
+  min-height: 864px;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.centraliza::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 101%;
+  background: url("/assets/fundo.png") no-repeat center center;
+  background-size: cover;
+  opacity: 0.05;
+  z-index: -1;
+}
+
+.centraliza img {
+  width: auto;
+  height: auto;
+}
+.navBar {
+  min-width: 556px;
+}
+.navBar img {
+  width: 11%;
+}
+
+:host ::ng-deep .navBar .p-card-body {
+  padding: 1.2rem;
+}
+
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navDireita {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  font-size: 1.3rem;
+}
+:host ::ng-deep .p-selectbutton {
+  height: 3rem;
+  margin: 1rem auto;
+}
+
+:host ::ng-deep .p-card {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+:host ::ng-deep .p-button {
+  display: block;
+  margin: 1rem auto;
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
+.footer {
+  background-color: rgb(247, 246, 246);
+  text-align: center;
+  padding: 0.5rem;
+  min-width: 556px;
+}

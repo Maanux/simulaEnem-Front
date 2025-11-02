@@ -1,0 +1,110 @@
+<p-card class="navBar">
+  <div class="nav-content">
+    <img src="assets/logo22.png" alt="Minha Imagem" />
+    <div class="navDireita">
+      <p (click)="goToSimulados()" style="cursor: pointer">
+        Criação de Simulados
+      </p>
+      <p (click)="goToHistorico()" style="cursor: pointer">
+        Historico de Simulados
+      </p>
+    </div>
+  </div>
+</p-card>
+<div class="centraliza">
+  <p-selectbutton
+    [options]="stateOptions"
+    [(ngModel)]="value"
+    (onChange)="onSelectButtonChange($event)"
+    optionLabel="label"
+    optionValue="value"
+    aria-labelledby="basic"
+  />
+  <p-card>
+    <p-card header="Nome">
+      <p-floatLabel>
+        <input
+          pInputText
+          id="nome"
+          [(ngModel)]="usuario.nome"
+          autocomplete="off"
+        />
+        <label for="nome"></label>
+      </p-floatLabel>
+    </p-card>
+
+    <p-card header="Sobrenome">
+      <p-floatLabel>
+        <input
+          pInputText
+          id="sobrenome"
+          [(ngModel)]="usuario.sobrenome"
+          autocomplete="off"
+        />
+        <label for="sobrenome"></label>
+      </p-floatLabel>
+    </p-card>
+
+    <p-card header="Apelido">
+      <p-floatLabel>
+        <input
+          pInputText
+          id="apelido"
+          [(ngModel)]="usuario.apelido"
+          autocomplete="off"
+        />
+        <label for="apelido"></label>
+      </p-floatLabel>
+    </p-card>
+
+    <p-card header="Email">
+      <p-floatLabel>
+        <input
+          pInputText
+          id="email"
+          [(ngModel)]="usuario.email"
+          autocomplete="off"
+        />
+        <label for="email"></label>
+      </p-floatLabel>
+    </p-card>
+
+    <p-card header="Telefone">
+      <p-floatLabel>
+        <input
+          pInputText
+          id="telefone"
+          [(ngModel)]="usuario.telefone"
+          autocomplete="off"
+        />
+        <label for="telefone"></label>
+      </p-floatLabel>
+    </p-card>
+
+    <!-- Mensagem de erro -->
+    <div
+      *ngIf="errorMessage"
+      style="
+        background: #f8d7da;
+        color: #721c24;
+        padding: 12px;
+        border-radius: 6px;
+        margin: 10px 0;
+        border: 1px solid #f5c6cb;
+        text-align: center;
+      "
+    >
+      <i class="pi pi-exclamation-triangle" style="margin-right: 8px"></i>
+      {{ errorMessage }}
+    </div>
+
+    <p-button
+      label="Alterar Dados"
+      severity="danger"
+      (onClick)="salvarAlteracoes()"
+    />
+  </p-card>
+</div>
+<p-card header="" class="footer">
+  <p class="m-0">©2025 SimulaEnem. Todos os Direitos Reservados Maanux</p>
+</p-card>

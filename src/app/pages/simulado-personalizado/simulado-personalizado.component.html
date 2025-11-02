@@ -1,0 +1,123 @@
+<div class="backGround">
+  <p-card class="navBar">
+    <div class="nav-content">
+      <img src="assets/logo22.png" alt="Minha Imagem" />
+      <div class="navDireita">
+        <p (click)="goToHistorico()" style="cursor: pointer">
+          Historico de Simulados
+        </p>
+        <p (click)="goToPerfil()" style="cursor: pointer">Perfil</p>
+      </div>
+    </div>
+  </p-card>
+
+  <div class="centraliza">
+    <h1>Criação do Simulado</h1>
+    <p>Escolha como deseja fazer seu simulado</p>
+
+    <p-selectbutton
+      [options]="stateOptions"
+      [(ngModel)]="value"
+      (onChange)="onSelectButtonChange($event)"
+      optionLabel="label"
+      optionValue="value"
+      aria-labelledby="basic"
+    />
+
+    <p-card header="" class="bloco">
+      <div class="alinharEsquerda">
+        <h1>Simulado Personalizado</h1>
+        <span>
+          <p>
+            O simulado pode ter no máximo 180 questões ({{ totalQuestoes }}/180)
+          </p>
+        </span>
+        <p>Escolha o numero de questões que o simulado deve conter</p>
+        <span>
+          <p>Quantidade de questões de Ciências-Humanas</p>
+        </span>
+        <p-autocomplete
+          [(ngModel)]="questoesHumanas"
+          [dropdown]="true"
+          [suggestions]="filteredNumbers"
+          (completeMethod)="filterNumbers($event)"
+          [minLength]="1"
+          placeholder="Selecione ou digite o numero de questões"
+        >
+        </p-autocomplete>
+        <span>
+          <p>Quantidade de questões de Ciências-Natureza</p>
+        </span>
+        <p-autocomplete
+          [(ngModel)]="questoesNatureza"
+          [dropdown]="true"
+          [suggestions]="filteredNumbers"
+          (completeMethod)="filterNumbers($event)"
+          [minLength]="1"
+          placeholder="Selecione ou digite o numero de questões"
+        >
+        </p-autocomplete>
+        <span>
+          <p>Quantidade de questões de Linguagens</p>
+        </span>
+        <p-autocomplete
+          [(ngModel)]="questoesLinguagens"
+          [dropdown]="true"
+          [suggestions]="filteredNumbers"
+          (completeMethod)="filterNumbers($event)"
+          [minLength]="1"
+          placeholder="Selecione ou digite o numero de questões"
+        >
+        </p-autocomplete>
+        <span>
+          <p>Quantidade de questões de Matematica</p>
+        </span>
+        <p-autocomplete
+          [(ngModel)]="questoesMatematica"
+          [dropdown]="true"
+          [suggestions]="filteredNumbers"
+          (completeMethod)="filterNumbers($event)"
+          [minLength]="1"
+          placeholder="Selecione ou digite o numero de questões"
+        >
+        </p-autocomplete>
+        <span>
+          <p>Quantidade de questões de Ingles</p>
+        </span>
+        <p-autocomplete
+          [(ngModel)]="questoesIngles"
+          [dropdown]="true"
+          [suggestions]="filteredNumbers"
+          (completeMethod)="filterNumbers($event)"
+          [minLength]="1"
+          placeholder="Selecione ou digite o numero de questões"
+        >
+        </p-autocomplete>
+        <span>
+          <p>Quantidade de questões de Espanhol</p>
+        </span>
+        <p-autocomplete
+          [(ngModel)]="questoesEspanhol"
+          [dropdown]="true"
+          [suggestions]="filteredNumbers"
+          (completeMethod)="filterNumbers($event)"
+          [minLength]="1"
+          placeholder="Selecione ou digite o numero de questões"
+        >
+        </p-autocomplete>
+      </div>
+      <div>
+        <p-button
+          label="Gerar Simulado"
+          [disabled]="!isNumberValid"
+          (click)="gerarSimulado()"
+          variant="outlined"
+          size="large"
+        ></p-button>
+      </div>
+    </p-card>
+  </div>
+  <p-card header="" class="footer">
+    <p class="m-0">©2025 SimulaEnem. Todos os Direitos Reservados Maanux</p>
+  </p-card>
+</div>

@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { SelectButtonModule } from 'primeng/selectbutton';
 
 import { Router } from '@angular/router';
+import { AuthService, DadosLogin } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,16 @@ export class LoginComponent {
     { label: 'Registrar', value: 2 }
   ];
 
-  constructor(private router: Router) { }
+  email: any; 
+  senha: any; 
+
+  loading = false;
+  errorMessage = '';
+
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   onSelectButtonChange(event: any) {
     if (event.value === 2) {
@@ -41,13 +51,35 @@ export class LoginComponent {
     }
   }
 
-  value3: any;
-  value4: any;
-
   onSubmit() {
-    console.log('Apelido:', this.value3);
-    console.log('Senha:', this.value4);
-    console.log('SelectButton value:', this.value);
-  }
+    if (!this.email || !this.senha) {
+      return;
+    }
 
+    this.loading = true;
+    this.errorMessage = '';
+
+    const dadosLogin: DadosLogin = {
+      email: this.email,
+      senha: this.senha
+    };
+
+    this.authService.login(dadosLogin).subscribe({
+      next: (dadosToken) => {
+        console.log('Login realizado com sucesso!');
+        console.log('Token:', dadosToken.token);
+        console.log('UUID:', dadosToken.uuid);
+        
+        this.router.navigate(['/simuladoAleatorio']);
+      },
+      error: (erro) => {
+        console.error('Erro no login:', erro);
+        this.errorMessage = 'Email ou senha incorretos';
+        this.loading = false;
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
+  }
 }
