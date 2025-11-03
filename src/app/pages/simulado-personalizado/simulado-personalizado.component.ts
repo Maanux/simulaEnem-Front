@@ -7,6 +7,8 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { ProvaService, DadosProvaCriada } from '../../services/prova.service';
 import { CardModule } from 'primeng/card';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID, Inject } from '@angular/core';
 
 @Component({
   selector: 'app-simulado-personalizado',
@@ -41,7 +43,11 @@ export class SimuladoPersonalizadoComponent {
   loading = false;
   errorMessage = '';
 
-  constructor(private router: Router, private provaService: ProvaService) {}
+  constructor(
+    private router: Router,
+    private provaService: ProvaService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   goToHistorico() {
     this.router.navigate(['/historicoDeSimulados']);
@@ -108,7 +114,11 @@ export class SimuladoPersonalizadoComponent {
     this.provaService.criarProvaPersonalizada(disciplinas).subscribe({
       next: (provaCriada: DadosProvaCriada) => {
         console.log('Prova personalizada criada:', provaCriada);
-        localStorage.setItem('ultima_prova_id', provaCriada.externalId);
+
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.setItem('ultima_prova_id', provaCriada.externalId);
+        }
+
         this.router.navigate(['/provas', provaCriada.externalId, 'questao', 1]);
       },
       error: (erro) => {

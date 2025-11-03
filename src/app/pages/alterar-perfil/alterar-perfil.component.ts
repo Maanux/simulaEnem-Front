@@ -8,6 +8,8 @@ import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID, Inject } from '@angular/core';
 
 @Component({
   selector: 'app-alterar-perfil',
@@ -56,18 +58,54 @@ export class AlterarPerfilComponent implements OnInit {
 
   private apiUrl = 'http://localhost:8080/usuarios';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit() {
-    const token = localStorage.getItem('auth_token');
-    const userData = localStorage.getItem('user_data');
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('auth_token');
+      const userData = localStorage.getItem('user_data');
 
-    if (token && userData) {
-      const parsed = JSON.parse(userData);
-      const uuid = parsed.uuid;
-      this.carregarUsuario(uuid, token);
-    } else {
-      console.error('Token ou user_data não encontrados.');
+      if (token && userData) {
+        const parsed = JSON.parse(userData);
+        const uuid = parsed.uuid;
+        this.carregarUsuario(uuid, token);
+      } else {
+        console.error('Token ou user_data não encontrados.');
+      }
+    }
+  }
+
+  salvarAlteracoes() {
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('auth_token');
+      const userData = localStorage.getItem('user_data');
+
+      if (token && userData) {
+        const parsed = JSON.parse(userData);
+        const uuid = parsed.uuid;
+        const headers = new HttpHeaders().set(
+          'Authorization',
+          `Bearer ${token}`
+        );
+
+        this.http
+          .put(`${this.apiUrl}/${uuid}`, this.usuario, { headers })
+          .subscribe({
+            next: () => {
+              alert('Dados alterados com sucesso!');
+              this.router.navigate(['/perfil']);
+            },
+            error: (err) => {
+              console.error('Erro ao salvar alterações:', err);
+              this.errorMessage =
+                err.error?.message || 'Erro ao salvar alterações.';
+            },
+          });
+      }
     }
   }
 
@@ -84,30 +122,4 @@ export class AlterarPerfilComponent implements OnInit {
   }
 
   errorMessage: string | null = null;
-
-  salvarAlteracoes() {
-    const token = localStorage.getItem('auth_token');
-    const userData = localStorage.getItem('user_data');
-
-    if (token && userData) {
-      const parsed = JSON.parse(userData);
-      const uuid = parsed.uuid;
-      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-
-      this.http
-        .put(`${this.apiUrl}/${uuid}`, this.usuario, { headers })
-        .subscribe({
-          next: () => {
-            alert('Dados alterados com sucesso!');
-            this.router.navigate(['/perfil']);
-          },
-          error: (err) => {
-            console.error('Erro ao salvar alterações:', err);
-
-            this.errorMessage =
-              err.error?.message || 'Erro ao salvar alterações.';
-          },
-        });
-    }
-  }
 }
