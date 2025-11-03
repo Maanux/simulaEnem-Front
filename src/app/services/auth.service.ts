@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface DadosLogin {
   email: string;
@@ -44,7 +45,10 @@ export class AuthService {
   );
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   register(data: RegisterRequest): Observable<AuthResponse> {
     return this.http
@@ -83,7 +87,7 @@ export class AuthService {
   }
 
   private saveAuthData(response: AuthResponse): void {
-    if (typeof window !== 'undefined') {
+    if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem(this.TOKEN_KEY, response.token);
       localStorage.setItem(
         this.USER_KEY,
@@ -98,39 +102,39 @@ export class AuthService {
     this.isAuthenticatedSubject.next(true);
   }
 
-  getToken(): string | null {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem(this.TOKEN_KEY);
-    }
-    return null;
-  }
-
   getUserUuid(): string | null {
     const userData = this.getUserData();
     return userData ? userData.uuid : null;
-  }
-
-  getUserData(): any {
-    if (typeof window !== 'undefined') {
-      const data = localStorage.getItem(this.USER_KEY);
-      return data ? JSON.parse(data) : null;
-    }
-    return null;
-  }
-
-  private hasToken(): boolean {
-    return !!this.getToken();
   }
 
   isAuthenticated(): boolean {
     return this.hasToken();
   }
 
+  getToken(): string | null {
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem(this.TOKEN_KEY);
+    }
+    return null;
+  }
+
+  getUserData(): any {
+    if (isPlatformBrowser(this.platformId)) {
+      const data = localStorage.getItem(this.USER_KEY);
+      return data ? JSON.parse(data) : null;
+    }
+    return null;
+  }
+
   logout(): void {
-    if (typeof window !== 'undefined') {
+    if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem(this.TOKEN_KEY);
       localStorage.removeItem(this.USER_KEY);
     }
     this.isAuthenticatedSubject.next(false);
+  }
+
+  private hasToken(): boolean {
+    return !!this.getToken();
   }
 }

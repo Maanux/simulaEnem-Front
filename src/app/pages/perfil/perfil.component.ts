@@ -12,6 +12,8 @@ import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID, Inject } from '@angular/core';
 
 @Component({
   selector: 'app-perfil',
@@ -37,7 +39,8 @@ export class PerfilComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
   stateOptions = [
     { label: 'Perfil', value: 1 },
@@ -61,14 +64,16 @@ export class PerfilComponent implements OnInit {
   }
 
   ngOnInit() {
-    const token = localStorage.getItem('auth_token');
-    const userData = localStorage.getItem('user_data');
+    if (isPlatformBrowser(this.platformId)) {
+      const token = localStorage.getItem('auth_token');
+      const userData = localStorage.getItem('user_data');
 
-    if (token && userData) {
-      const parsed = JSON.parse(userData);
-      const uuid = parsed.uuid;
+      if (token && userData) {
+        const parsed = JSON.parse(userData);
+        const uuid = parsed.uuid;
 
-      this.carregarUsuario(uuid, token);
+        this.carregarUsuario(uuid, token);
+      }
     }
   }
 
