@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-alterar-perfil',
@@ -56,7 +57,7 @@ export class AlterarPerfilComponent implements OnInit {
     }
   }
 
-  private apiUrl = 'http://localhost:8080/usuarios';
+  private readonly API_URL = environment.apiUrl;
 
   constructor(
     private http: HttpClient,
@@ -93,7 +94,7 @@ export class AlterarPerfilComponent implements OnInit {
         );
 
         this.http
-          .put(`${this.apiUrl}/${uuid}`, this.usuario, { headers })
+          .put(`${this.API_URL}/${uuid}`, this.usuario, { headers })
           .subscribe({
             next: () => {
               alert('Dados alterados com sucesso!');
@@ -111,7 +112,7 @@ export class AlterarPerfilComponent implements OnInit {
 
   carregarUsuario(uuid: string, token: string) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    this.http.get(`${this.apiUrl}/${uuid}`, { headers }).subscribe({
+    this.http.get(`${this.API_URL}/${uuid}`, { headers }).subscribe({
       next: (res: any) => {
         this.usuario = res;
       },
