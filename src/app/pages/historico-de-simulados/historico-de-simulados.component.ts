@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { environment } from '../../../environments/environment';
 
 interface ProvaUsuarioDTO {
   uuid: string;
@@ -46,7 +47,7 @@ interface SimuladoExibicao {
   styleUrl: './historico-de-simulados.component.css',
 })
 export class HistoricoDeSimuladosComponent implements OnInit {
-  private readonly API_URL = 'http://localhost:8080';
+  private readonly API_URL = environment.apiUrl;
 
   filtroMes: string = '';
   filtroAno: string = '';

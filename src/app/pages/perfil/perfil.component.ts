@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID, Inject } from '@angular/core';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-perfil',
@@ -34,6 +35,7 @@ import { PLATFORM_ID, Inject } from '@angular/core';
   styleUrls: ['./perfil.component.css'],
 })
 export class PerfilComponent implements OnInit {
+  private readonly API_URL = environment.apiUrl;
   usuario: any = {};
 
   constructor(
@@ -80,12 +82,10 @@ export class PerfilComponent implements OnInit {
   carregarUsuario(uuid: string, token: string) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    this.http
-      .get(`http://localhost:8080/usuarios/${uuid}`, { headers })
-      .subscribe({
-        next: (res: any) => (this.usuario = res),
-        error: (err) => console.error('Erro ao buscar usuário:', err),
-      });
+    this.http.get(`${this.API_URL}/usuarios/${uuid}`, { headers }).subscribe({
+      next: (res: any) => (this.usuario = res),
+      error: (err) => console.error('Erro ao buscar usuário:', err),
+    });
   }
 
   logout() {

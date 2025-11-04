@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Observable, of, switchMap } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 interface Alternativa {
   letter: string;
@@ -57,6 +58,8 @@ interface StatusProvaResponse {
   styleUrl: './prova.component.css',
 })
 export class ProvaComponent implements OnInit {
+  private readonly API_URL = environment.apiUrl;
+
   provaQuestao: ProvaQuestaoResponse | null = null;
   loading: boolean = true;
   error: string | null = null;
@@ -95,7 +98,7 @@ export class ProvaComponent implements OnInit {
   carregarStatusProva(): void {
     this.http
       .get<StatusProvaResponse>(
-        `http://localhost:8080/provas/${this.provaUuid}/status`
+        `${this.API_URL}/provas/${this.provaUuid}/status`
       )
       .subscribe({
         next: (res) => {
@@ -120,7 +123,7 @@ export class ProvaComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
-    const apiUrl = `http://localhost:8080/provas/${this.provaUuid}/questao/${this.numeroQuestao}`;
+    const apiUrl = `${this.API_URL}/provas/${this.provaUuid}/questao/${this.numeroQuestao}`;
 
     this.http.get<ProvaQuestaoResponse>(apiUrl).subscribe({
       next: (data) => {
@@ -214,7 +217,7 @@ export class ProvaComponent implements OnInit {
       tempoGasto: this.tempoGasto,
     };
 
-    const url = `http://localhost:8080/provas/${this.provaUuid}/questoes/${this.provaQuestao.questao.externalId}/responder`;
+    const url = `${this.API_URL}/provas/${this.provaUuid}/questoes/${this.provaQuestao.questao.externalId}/responder`;
 
     console.log('Registrando resposta:', {
       questao: this.numeroQuestao,
@@ -236,7 +239,7 @@ export class ProvaComponent implements OnInit {
     console.log('Pausando prova na questão', this.numeroQuestao);
 
     this.http
-      .post(`http://localhost:8080/provas/${this.provaUuid}/pausar`, body)
+      .post(`${this.API_URL}/provas/${this.provaUuid}/pausar`, body)
       .subscribe({
         next: (res) => {
           console.log('Prova pausada com sucesso:', res);
@@ -256,7 +259,7 @@ export class ProvaComponent implements OnInit {
         switchMap(() => {
           console.log('Última resposta registrada, finalizando...');
           return this.http.post(
-            `http://localhost:8080/provas/${this.provaUuid}/finalizar`,
+            `${this.API_URL}/provas/${this.provaUuid}/finalizar`,
             {}
           );
         })
